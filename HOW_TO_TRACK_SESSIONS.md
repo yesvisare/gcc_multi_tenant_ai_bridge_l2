@@ -1,20 +1,92 @@
 # How to Track Sessions in This Repo
 
-Two approaches depending on whether you want to track **future sessions** or **backfill past sessions**.
+**BEST APPROACH:** At the end of each session, copy Claude's deliverables summary directly to SESSION_LOG.md.
 
 ---
 
-## ✅ You're Correct!
+## 🎯 What You Want to Capture
 
-The initial setup only works for **future interactions**, not past conversations.
+At the end of each chat session, Claude produces a **deliverables summary** that looks like this:
 
-Here's the complete solution for **both scenarios**:
+```
+📦 Deliverables
+1. Jupyter Notebook
+   Structure (17 cells total):
+   ✅ Cell 0: Windows PowerShell instructions
+   ✅ Cells 1-4: 4-Part Learning Arc
+   ...
+
+🎯 Quality Standards Met
+✅ Standard 1
+✅ Standard 2
+...
+
+📊 Summary
+FROM: Previous state
+TO: New state
+...
+
+🚀 Git Status
+Branch: branch-name
+Commit: hash
+...
+```
+
+**This rich context is what you want in SESSION_LOG.md for each session.**
 
 ---
 
-## 🔮 For FUTURE Sessions
+## ✅ Recommended Workflow (EASIEST)
 
-Use the automated workflow at the **end of each session**.
+### At the END of each session:
+
+1. **Scroll to Claude's final deliverables summary** (usually appears after "Success!")
+
+2. **Copy the template** from `.github/END_OF_SESSION_CHECKLIST.md`
+
+3. **Fill it in** using Claude's summary:
+   ```markdown
+   ## Session [N] - YYYY-MM-DD
+
+   ### Task Description
+   [What was requested]
+
+   ### 📦 Deliverables
+   [Copy from Claude's summary]
+
+   ### 🎯 Quality Standards Met
+   [Copy from Claude's summary]
+
+   ### 📊 Content Summary
+   [Copy from Claude's summary]
+
+   ### 🚀 Git Status
+   [Copy from Claude's summary]
+
+   ### 🎓 Usage
+   [Copy from Claude's summary]
+
+   ### Metrics
+   [Copy from Claude's summary]
+   ```
+
+4. **Add to SESSION_LOG.md** under "## Future Sessions"
+
+5. **Commit:**
+   ```bash
+   git add SESSION_LOG.md
+   git commit -m "Add session [N] deliverables"
+   git push
+   ```
+
+**Time:** 2-3 minutes per session
+**Result:** Rich, detailed session history with full context
+
+---
+
+## 🔮 For FUTURE Sessions (Alternative - Automated Git Details)
+
+If you prefer automation for git details (then manually add context):
 
 ### Quick Steps:
 
