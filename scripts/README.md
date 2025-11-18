@@ -99,6 +99,132 @@ Create validation script for M14.3
 
 ---
 
+## reconstruct_past_sessions.py
+
+**Purpose:** Reconstruct session entries from past git commits to backfill SESSION_LOG.md
+
+### Usage
+
+**Analyze last 20 commits:**
+```bash
+python scripts/reconstruct_past_sessions.py --commits 20
+```
+
+**Analyze commits since a specific date:**
+```bash
+python scripts/reconstruct_past_sessions.py --start-date 2025-01-01
+```
+
+**Analyze specific branch:**
+```bash
+python scripts/reconstruct_past_sessions.py --branch main --commits 50
+```
+
+**Custom output file:**
+```bash
+python scripts/reconstruct_past_sessions.py \
+  --commits 30 \
+  --output MY_PAST_SESSIONS.md \
+  --start-session-num 1
+```
+
+### What It Does
+
+1. **Analyzes Git History:**
+   - Retrieves commit history based on criteria
+   - Groups commits by date (same-day commits = likely one session)
+   - Extracts files changed, authors, commit messages
+
+2. **Generates Reconstruction:**
+   - Creates session entries with [MANUAL REVIEW NEEDED] markers
+   - Pre-fills git details (commits, files, stats)
+   - Lists all files created/modified
+   - Includes commit details for context
+
+3. **Outputs to File:**
+   - Writes to `RECONSTRUCTED_SESSIONS.md` (default)
+   - Ready for manual review and editing
+
+### Options
+
+- `--start-date YYYY-MM-DD`: Analyze commits since this date
+- `--commits N`: Number of recent commits to analyze
+- `--branch name`: Branch to analyze (default: current)
+- `--output file.md`: Output file (default: RECONSTRUCTED_SESSIONS.md)
+- `--start-session-num N`: Starting session number (default: 2)
+
+### Example Output
+
+The script generates entries like this:
+
+```markdown
+## Session 2 - 2025-11-15
+
+### Task Description
+[RECONSTRUCTED FROM GIT HISTORY]
+
+Commits from this session:
+- Add validation notebook for M11.2
+- Update README with usage instructions
+
+### Files Changed
+- `notebooks/validation_m11_2.ipynb` (NEW)
+- `README.md` (MODIFIED)
+
+### Git Details
+- **Main Commit:** `abc1234` - "Add validation notebook for M11.2"
+- **Total Commits:** 2
+- **Stats:** 2 files changed, 350 insertions(+)
+
+### Key Outcomes
+**[MANUAL REVIEW NEEDED]**
+Please fill in what was accomplished...
+```
+
+### After Running
+
+1. **Review the generated file:**
+   ```bash
+   cat RECONSTRUCTED_SESSIONS.md
+   ```
+
+2. **Fill in the [MANUAL REVIEW NEEDED] sections:**
+   - Deliverables: Describe what was actually built
+   - Key Outcomes: Standards met, accomplishments
+   - Metrics: Specific metrics for that work
+   - Notes: Add context from that session
+
+3. **Copy to SESSION_LOG.md:**
+   - Copy relevant entries to SESSION_LOG.md
+   - Place them in chronological order
+   - Update "Quick Stats" section
+
+4. **Commit:**
+   ```bash
+   git add SESSION_LOG.md
+   git commit -m "Backfill session log with past sessions"
+   git push
+   ```
+
+### Tips for Backfilling
+
+**If you remember the sessions:**
+- Review git commits to jog memory
+- Fill in as much context as possible
+- Note which bridge/notebook was created
+
+**If you don't remember:**
+- Focus on the files created
+- Describe what the files do
+- Keep it factual based on git history
+
+**For old work:**
+- It's okay to be brief
+- Focus on major deliverables
+- Note "Limited context - reconstructed from git"
+
+---
+
 ## Manual Alternative
 
 If you prefer not to use the script, you can manually update `SESSION_LOG.md` using the template in `.github/SESSION_TEMPLATE.md`.
